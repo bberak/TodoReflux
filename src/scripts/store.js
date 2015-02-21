@@ -2,8 +2,8 @@ var _ = require("lodash");
 var Reflux = require("reflux");
 var TodoActions = require("actions.js");
 
-var todoCount = 0;
-var localStorageKey = "todos";
+var todoCounter = 0;
+var localStorageKey = "todos-20150222-0010";
 
 function getItemByKey (list, itemKey) {
 	return _.find(list, function(item) {
@@ -39,7 +39,7 @@ var TodoListStore = Reflux.createStore({
 			return item.key !== itemKey;
 		});
 		this.updateList(newList);
-	}
+	},
 
 	onToggleItem: function(itemKey) {
         var foundItem = getItemByKey(this.list, itemKey);
@@ -50,19 +50,19 @@ var TodoListStore = Reflux.createStore({
     },
 
     onToggleAllItems: function(checked) {
-    	var newList = _.map(list, function(item) {
+    	var newList = _.map(this.list, function(item) {
     		item.isComplete = checked;
     		return item;
     	});
     	this.updateList(newList);
-    }
+    },
 
     onClearCompleted: function() {
     	var newList = _.filter(this.list, function(item) {
     		return item.isComplete == false;
     	});
     	this.updateList(newList);
-    }
+    },
 
 	// called whenever we change a list. normally this would mean a database API call
     updateList: function(list){
@@ -73,7 +73,7 @@ var TodoListStore = Reflux.createStore({
     },
 
   	// this will be called by all listening components as they register their listeners
-    getDefaultData: function() {
+    getInitialState: function() {
         var loadedList = localStorage.getItem(localStorageKey);
         if (!loadedList) {
             // If no list is in localstorage, start out with a default one
@@ -90,6 +90,7 @@ var TodoListStore = Reflux.createStore({
                 return item;
             });
         }
+        console.log("List length: " + this.list.length);
         return this.list;
     }
 });
