@@ -3,7 +3,7 @@ var Reflux = require("reflux");
 var TodoActions = require("actions.js");
 
 var todoCounter = 0;
-var localStorageKey = "todos-20150222-0010";
+var localStorageKey = "todos";
 
 function getItemByKey (list, itemKey) {
 	return _.find(list, function(item) {
@@ -90,7 +90,6 @@ var TodoListStore = Reflux.createStore({
                 return item;
             });
         }
-        console.log("List length: " + this.list.length);
         return this.list;
     }
 });

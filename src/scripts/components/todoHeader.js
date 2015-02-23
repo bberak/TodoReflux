@@ -3,7 +3,10 @@
 var React = require("react");
 var Reflux = require("reflux");
 var TodoActions = require("actions.js");
+var TodoToggle = require("./todoToggle.js");
 var _ = require("lodash");
+var ENTER = 13;
+var ESCAPE = 27;
 
 var TodoHeader = React.createClass({
 
@@ -15,8 +18,20 @@ var TodoHeader = React.createClass({
         TodoActions.toggleAllItems(e.target.checked);
     },
 
-    render: function() {
+    onKeyDown: function (e) {
+        if (e.keyCode === ENTER && e.target.value) {
+            var label = e.target.value.trim()
+            if (label.length > 0) {
+                TodoActions.addItem(label)
+                e.target.value = "";
+            }
+        }
+        else if (e.keyCode === ESCAPE) {
+            e.target.value = "";
+        }
+    },
 
+    render: function() {
         var allChecked = _.every(this.props.list, "isComplete", true );
 
         var checkbox = allChecked ?
@@ -24,13 +39,10 @@ var TodoHeader = React.createClass({
             <input type="checkbox" onChange={this.toggleAll} />;
 
         return (
-            <div className="todoHeader">
-                <div className="toggleAll">
-                    {checkbox}
-                    <span>Toogle All</span>
-                </div>
-                <div className="newItem">
-                    <input type="text" placeholder="What needs to be done?" />
+            <div>
+                <TodoToggle list={this.props.list} />
+                <div>
+                    <input type="text" placeholder="What needs to be done?" onKeyDown={this.onKeyDown} />
                 </div>
             </div>
         );
