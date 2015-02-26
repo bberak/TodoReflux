@@ -76,13 +76,8 @@ var TodoListStore = Reflux.createStore({
     getInitialState: function() {
         var loadedList = localStorage.getItem(localStorageKey);
         if (!loadedList) {
-            // If no list is in localstorage, start out with a default one
-            this.list = [{
-                key: todoCounter++,
-                created: new Date(),
-                isComplete: false,
-                label: "Rule the web"
-            }];
+            // If no list is in localstorage, start with an empty one
+            this.list = [];
         } else {
             this.list = _.map(JSON.parse(loadedList), function(item) {
                 // just resetting the key property for each todo item

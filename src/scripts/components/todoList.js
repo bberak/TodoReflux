@@ -12,7 +12,7 @@ var TodoList = React.createClass({
 
     mixins: [ ReactRouter.State ],
 
-	 propTypes: {
+	propTypes: {
         list: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     },
 
@@ -33,7 +33,7 @@ var TodoList = React.createClass({
         }
 
         var todoItems = _.map(filteredList, function (item) {
-            return <TodoItem label={item.label} key={item.key} isComplete={item.isComplete} />;
+            return <TodoItem label={item.label} id={item.key} key={item.key} isComplete={item.isComplete} />;
         });
 
         return (

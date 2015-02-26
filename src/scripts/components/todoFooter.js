@@ -8,9 +8,24 @@ var _ = require("lodash");
 
 var TodoFooter = React.createClass({
 
+    propTypes: {
+        list: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    },
+
+    onClearCompleted: function() {
+        TodoActions.clearCompleted();
+    },
+
     render: function() {
+
+        var totalCount = this.props.list.length;
+        var completedCount = _.filter(this.props.list, "isComplete").length;
+
+        var footerClassName = totalCount > 0 ? "footer" : "hidden";
+        var clearCompletedClassName = completedCount > 0 ? "completed" : "hidden";
+
         return (
-            <div>
+            <div className={footerClassName}>
                 <ul>
                     <li>
                         <ReactRouter.Link activeClassName="selected" to="All">All</ReactRouter.Link>
@@ -22,7 +37,7 @@ var TodoFooter = React.createClass({
                         <ReactRouter.Link activeClassName="selected" to="Completed">Completed</ReactRouter.Link>
                     </li>
                 </ul>
-                <input type="button" value="Remove completed" />
+                <input className={clearCompletedClassName} type="button" value="Remove completed" onClick={this.onClearCompleted} />
             </div>
         );
     }

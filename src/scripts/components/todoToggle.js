@@ -11,8 +11,12 @@ var TodoToggle = React.createClass({
         list: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     },
 
-    toggleAll: function(e) {
-        TodoActions.toggleAllItems(e.target.checked);
+    checkAll: function(e) {
+        TodoActions.toggleAllItems(true);
+    },
+
+    unCheckAll: function(e) {
+        TodoActions.toggleAllItems(false);
     },
 
     render: function() {
@@ -22,14 +26,13 @@ var TodoToggle = React.createClass({
         if (any) {
             var allChecked = _.every(this.props.list, "isComplete", true );
 
-            var checkbox = allChecked ?
-                <input type="checkbox" onChange={this.toggleAll} checked /> :
-                <input type="checkbox" onChange={this.toggleAll} />;
+            var button = allChecked ?
+                <input type="button" onClick={this.unCheckAll} value="Uncheck all" /> :
+                <input type="button" onClick={this.checkAll} value="Check all" />;
 
             return (
                 <div>
-                    {checkbox}
-                    <span>Toogle All</span>
+                    {button}
                 </div>);
         }
         else {

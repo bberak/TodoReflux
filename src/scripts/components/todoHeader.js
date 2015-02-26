@@ -4,9 +4,8 @@ var React = require("react");
 var Reflux = require("reflux");
 var TodoActions = require("actions.js");
 var TodoToggle = require("./todoToggle.js");
+var TextInput = require("./textInput.js");
 var _ = require("lodash");
-var ENTER = 13;
-var ESCAPE = 27;
 
 var TodoHeader = React.createClass({
 
@@ -18,17 +17,16 @@ var TodoHeader = React.createClass({
         TodoActions.toggleAllItems(e.target.checked);
     },
 
-    onKeyDown: function (e) {
-        if (e.keyCode === ENTER && e.target.value) {
+    onEnter: function (e) {
+        if (e.target.value && e.target.value.trim() > 0) {
             var label = e.target.value.trim()
-            if (label.length > 0) {
-                TodoActions.addItem(label)
-                e.target.value = "";
-            }
-        }
-        else if (e.keyCode === ESCAPE) {
+            TodoActions.addItem(label)
             e.target.value = "";
         }
+    },
+
+    onEscape: function (e) {
+        e.target.value = "";
     },
 
     render: function() {
@@ -38,11 +36,13 @@ var TodoHeader = React.createClass({
             <input type="checkbox" onChange={this.toggleAll} checked /> :
             <input type="checkbox" onChange={this.toggleAll} />;
 
+            console.log("Rendering header");
+
         return (
             <div>
                 <TodoToggle list={this.props.list} />
                 <div>
-                    <input type="text" placeholder="What needs to be done?" onKeyDown={this.onKeyDown} />
+                    <TextInput onEnter={this.onEnter} onEscape={this.onEscape} autoFocus={true} placeholder="What needs to be done?" />
                 </div>
             </div>
         );

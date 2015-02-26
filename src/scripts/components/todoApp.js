@@ -16,7 +16,7 @@ var TodoApp = React.createClass({
             <div>
                 <TodoHeader list={this.state.list} />
                 <ReactRouter.RouteHandler list={this.state.list} />
-                <TodoFooter />
+                <TodoFooter list={this.state.list} />
             </div>
         );
     }
